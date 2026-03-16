@@ -306,7 +306,7 @@
 
 try {
     $host = '127.0.0.1';
-    $db = 'test';
+    $db = 'students';
     $user = 'root';
     $pass = '';
     $charset = 'utf8';
@@ -323,15 +323,43 @@ try {
     echo "<br/>";
 
     // Получение данных из таблицы student по полю name
-    $stmt = $pdo->query('SELECT * FROM student');
+    $stmt = $pdo->query('SELECT * FROM studentts');
     var_dump($stmt);
     echo "<br/>";
     while ($row = $stmt->fetch())
     {
         echo $row['name']." ".$row['ote']." ".$row['stepen']." ".$row['dr_st'];
         echo "<br/>";
-        //printf("%d", $row['stepen']);
+
     }
+    //update
+    $nameupd = 'Anton';
+    $idupd = 2;
+
+    $stmtupd = $pdo->prepare('UPDATE studentts SET name = :name WHERE id = :id');
+    $stmtupd->bindParam('name', $nameupd);
+    $stmtupd->bindParam(':id', $idupd);
+    $stmtupd->execute();
+
+    //delete
+    $idDel = 2;
+    $stmtdel = $pdo->prepare('DELETE FROM studentts WHERE id = :id');
+    $stmtdel->bindParam(':id', $idDel);
+    $stmtdel->execute();
+
+
+//insert
+//    $gov_number = 3222;
+//    $first_name = "Anton";
+//    $last_name = "Antonov";
+//    $middle_name = "Antonovich";
+//
+//  $stmt = $pdo->prepare('INSERT INTO  people (gov_number, first_name, last_name, middle_name) VALUES (?, ?, ?, ?)');
+//  $stmt->bindParam(1, $gov_number);
+//  $stmt->bindParam(2, $first_name);
+//  $stmt->bindParam(3, $last_name);
+//  $stmt->bindParam(4, $middle_name);
+//  $stmt->execute();
 
 } catch (PDOException $e) {
     die('Подключение не удалось: ' . $e->getMessage());
